@@ -2,18 +2,13 @@ const { createClient } = require("@supabase/supabase-js");
 const path = require("path");
 const dotenv = require("dotenv");
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY?.trim();
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 
 if (!supabaseUrl) {
   throw new Error("Missing SUPABASE_URL environment variable");
-}
-
-if (!supabaseAnonKey) {
-  throw new Error("Missing SUPABASE_ANON_KEY environment variable");
 }
 
 if (!supabaseServiceRoleKey) {
@@ -26,8 +21,6 @@ const clientOptions = {
     autoRefreshToken: false,
   },
 };
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey, clientOptions);
 
 const supabaseAdmin = createClient(
   supabaseUrl,
@@ -53,7 +46,6 @@ const testConnection = async () => {
 };
 
 module.exports = {
-  supabase,
   supabaseAdmin,
   testConnection,
 };

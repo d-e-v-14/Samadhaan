@@ -2,6 +2,27 @@ const { Server } = require("socket.io");
 
 const eventBus = require("./eventBus");
 const { supabaseAdmin } = require("../client/supabase");
+const { getAuthFromToken } = require("../middlewares/auth");
+
+const validateSocketAuth = async (socket, requiredRoles = []) => {
+  const token = socket.handshake.auth?.token || null;
+  if (!token) {
+    throw new Error("Missing auth token");
+  }
+
+  const auth = await getAuthFromToken(token);
+  const role = auth.role;
+
+  if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
+    throw new Error("Forbidden role");
+  }
+
+  return {
+    citizen: auth.citizen,
+    role,
+    session_id: auth.session.id,
+  };
+};
 
 const persistVoiceTranscript = async (payload) => {
   const complaintId =
@@ -49,6 +70,26 @@ const initializeSocketServer = (httpServer) => {
 
   const opsNamespace = io.of("/ops");
   const voiceNamespace = io.of("/voice");
+
+  opsNamespace.use(async (socket, next) => {
+    try {
+      const auth = await validateSocketAuth(socket, ["admin", "manager", "officer"]);
+      socket.data.auth = auth;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  voiceNamespace.use(async (socket, next) => {
+    try {
+      const auth = await validateSocketAuth(socket);
+      socket.data.auth = auth;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
 
   opsNamespace.on("connection", (socket) => {
     socket.on("ops:join", (payload = {}) => {
