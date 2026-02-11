@@ -26,5 +26,9 @@
   "bugs": {
     "url": "https://github.com/activateLabhesh/Samadhaan/issues"
   },
-  "homepage": "https://github.com/activateLabhesh/Samadhaan#readme"
+  "homepage": "https://github.com/activateLabhesh/Samadhaan#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
+    "supabase": "^2.76.7"
+  }
 }
