@@ -1,0 +1,49 @@
+:root {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  color: #12263a;
+  background: linear-gradient(135deg, #f3f8ff 0%, #dceeff 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.hero-card {
+  width: min(720px, 100%);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 18px 40px rgba(18, 38, 58, 0.14);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e6f4ff;
+  color: #0e6ba8;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+p {
+  margin: 14px 0 0;
+  line-height: 1.6;
+}
